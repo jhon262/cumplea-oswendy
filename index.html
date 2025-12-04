@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Wendy!</title>
+    <style>
+        /* --- FUENTES Y VARIABLES --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap');
+
+        :root {
+            --bts-purple: #5e2a84;
+            --bts-light: #cfaeea;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-color: #fff;
+        }
+
+        /* --- RESET Y BODY --- */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- ESTRELLAS DE FONDO (ESTÁTICAS Y TITILANTES) --- */
+        .stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            z-index: -2; opacity: 0.8; animation: twinkle 5s infinite alternate;
+        }
+        @keyframes twinkle { from {opacity: 0.4;} to {opacity: 1;} }
+
+        /* --- ESTRELLAS FUGACES (SHOOTING STARS) --- */
+        .shooting-star {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 4px; height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
+            animation: shoot 3s linear infinite;
+            opacity: 0;
+            z-index: -1;
+        }
+        
+        .shooting-star::before {
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+            width: 300px; height: 1px;
+            background: linear-gradient(90deg, #fff, transparent);
+        }
+
+        @keyframes shoot {
+            0% { transform: rotate(315deg) translateX(0); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: rotate(315deg) translateX(-1000px); opacity: 0; }
+        }
+
+        /* Posiciones aleatorias para las estrellas fugaces */
+        .shooting-star:nth-child(1) { top: 0; left: 50%; animation-delay: 0s; }
+        .shooting-star:nth-child(2) { top: 0; left: 20%; animation-delay: 2s; }
+        .shooting-star:nth-child(3) { top: 20%; left: 80%; animation-delay: 4s; }
+        .shooting-star:nth-child(4) { top: 0; left: 90%; animation-delay: 6s; }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+            padding: 2rem 1rem;
+            z-index: 1;
+        }
+
+        /* --- TEXTOS --- */
+        .title-main {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem; /* Tamaño base móvil */
+            margin: 10px 0;
+            background: -webkit-linear-gradient(#fff, var(--bts-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+            animation: pulse 2s infinite;
+        }
+
+        .subtitle-main {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--bts-light);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
+
+        /* --- FOTO PRINCIPAL (COMPLETA Y ADAPTABLE) --- */
+        .main-photo-frame {
+            width: 100%;
+            max-width: 600px; /* Ancho máximo en PC */
+            margin: 0 auto 20px;
+            border-radius: 20px; /* Bordes redondeados, no círculo */
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 30px rgba(147, 112, 219, 0.3);
+            position: relative;
+        }
+
+        .main-photo-frame img {
+            width: 100%;
+            height: auto; /* Altura automática para no deformar */
+            display: block;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .cake-icon {
+            font-size: 3rem;
+            position: absolute;
+            bottom: -15px; right: -15px;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float { 0% {transform: translateY(0px);} 50% {transform: translateY(-10px);} 100% {transform: translateY(0px);} }
+
+        /* --- REPRODUCTOR --- */
+        .audio-player {
+            margin: 20px auto;
+            background: var(--glass-bg);
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            width: 100%; max-width: 400px;
+        }
+        audio { width: 100%; height: 35px; outline: none; }
+
+        /* --- BOTONES --- */
+        .btn-group {
+            display: flex; flex-direction: column; gap: 15px;
+            margin-top: 30px; align-items: center;
+        }
+        
+        .btn {
+            background: linear-gradient(90deg, var(--bts-purple), #9b59b6);
+            border: none; padding: 15px 0; color: white;
+            font-size: 1.1rem; border-radius: 50px; cursor: pointer;
+            transition: 0.3s; font-family: 'Poppins', sans-serif;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 100%; max-width: 300px; /* Ancho controlado */
+            position: relative; overflow: hidden;
+        }
+        
+        .btn:hover { transform: scale(1.02); box-shadow: 0 0 25px var(--bts-purple); }
+
+        /* --- MEDIA QUERIES (ADAPTACIÓN A PC) --- */
+        @media (min-width: 768px) {
+            .title-main { font-size: 5rem; }
+            .subtitle-main { font-size: 2.5rem; }
+            .btn-group { flex-direction: row; justify-content: center; } /* Botones en fila en PC */
+            .btn { width: 200px; padding: 15px 20px; }
+        }
+
+        /* --- MODALES --- */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.9);
+            justify-content: center; align-items: center; backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: rgba(30, 30, 50, 0.95);
+            border: 1px solid var(--bts-purple);
+            padding: 25px; border-radius: 20px;
+            width: 90%; max-width: 600px;
+            max-height: 85vh; overflow-y: auto;
+            text-align: center; position: relative;
+            box-shadow: 0 0 50px rgba(94, 42, 132, 0.6);
+            animation: zoomIn 0.4s;
+        }
+        @keyframes zoomIn { from {transform: scale(0.8); opacity:0;} to {transform: scale(1); opacity:1;} }
+
+        .close-btn {
+            position: absolute; top: 15px; right: 20px; font-size: 35px; color: #fff; cursor: pointer; z-index: 10;
+        }
+
+        /* --- ESTILOS CARRUSEL --- */
+        .slider-container {
+            position: relative; width: 100%; 
+            height: 0; padding-bottom: 75%; /* Aspect Ratio 4:3 responsive */
+            overflow: hidden; border-radius: 15px; margin-bottom: 20px;
+            background: #000;
+        }
+
+        .slide-wrapper {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none;
+        }
+        .active-slide { display: block; animation: fade 0.8s; }
+        
+        .slide-wrapper img {
+            width: 100%; height: 100%; object-fit: contain; /* Foto completa sin cortes */
+        }
+
+        .caption {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            color: white; padding: 10px; font-size: 1rem;
+            text-align: center; font-style: italic; box-sizing: border-box;
+        }
+
+        .slider-nav button {
+            background: rgba(255,255,255,0.2); border: 1px solid white;
+            color: white; padding: 8px 20px; margin: 0 5px;
+            cursor: pointer; border-radius: 20px;
+        }
+
+        /* --- ESTILOS SORPRESA --- */
+        #flower-stage img { width: 70%; max-width: 250px; cursor: pointer; transition: 0.3s; animation: float 3s infinite ease-in-out; }
+        #flower-stage img:hover { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--bts-light)); }
+        #final-bts-message { display: none; }
+        .final-photo { width: 100%; border-radius: 10px; border: 2px solid var(--bts-light); margin-bottom: 15px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+
+    <div class="container">
+        <h1 class="title-main">Wendy</h1>
+        <h2 class="subtitle-main">¡Feliz Cumpleaños!</h2>
+
+        <div class="main-photo-frame">
+            <img src="imagenes/Foto 1.jpg" alt="Portada BTS">
+            <div class="cake-icon">🎂</div>
+        </div>
+
+        <div class="audio-player">
+            <audio controls loop>
+                <source src="imagenes/cancion.mp3" type="audio/mpeg">
+                Tu navegador no soporta audio.
+            </audio>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn" onclick="openModal('modal-mensaje')">💌 Carta</button>
+            <button class="btn" onclick="openModal('modal-momentos')">📸 Recuerdos</button>
+            <button class="btn" onclick="openModal('modal-dedicatoria')">🎤 Sorpresa</button>
+        </div>
+    </div>
+
+    <div id="modal-mensaje" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-mensaje')">&times;</span>
+            <h2 style="color: var(--bts-light);">Para mi mejor amiga</h2>
+            <div style="text-align: justify; line-height: 1.6; padding: 0 10px; font-size: 0.95rem;">
+                <p>¡Hola Bestie! 💜</p>
+                <p>
+                    Hoy celebramos otro año de tu vida, y no podía dejar pasar la oportunidad de hacerte algo especial.
+                    Gracias por ser mi compañera de aventuras, por escuchar mis audios de 5 minutos y por cantar conmigo.
+                </p>
+                <p>
+                    Espero que tu día sea tan brillante como el escenario de un concierto.
+                    ¡Te quiero muchísimo!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-momentos" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-momentos')">&times;</span>
+            <h3 style="color: var(--bts-light); margin-bottom: 15px;">Nuestros Recuerdos</h3>
+            
+            <div class="slider-container">
+                <div class="slide-wrapper active-slide">
+                    <img src="imagenes/Foto 2.jpg" alt="Foto 2">
+                    <div class="caption">"Momentos que valen oro ✨"</div>
+                </div>
+                <div class="slide-wrapper">
+                    <img src="imagenes/Foto 3.jpg" alt="Foto 3">
+                    <div class="caption">"Risas y más risas 💜"</div>
+                </div>
+                <div class="slide-wrapper">
+                    <img src="imagenes/Foto 4.jpg" alt="Foto 4">
+                    <div class="caption">"Inseparables siempre"</div>
+                </div>
+                <div class="slide-wrapper">
+                    <img src="imagenes/Foto 5.jpg" alt="Foto 5">
+                    <div class="caption">"Creando memorias"</div>
+                </div>
+                <div class="slide-wrapper">
+                    <img src="imagenes/Foto 6.jpg" alt="Foto 6">
+                    <div class="caption">"¡Salud por ti! 🥂"</div>
+                </div>
+                <div class="slide-wrapper">
+                    <img src="imagenes/Foto 7.jpg" alt="Foto 7">
+                    <div class="caption">"Te quiero amiga"</div>
+                </div>
+            </div>
+            
+            <div class="slider-nav">
+                <button onclick="changeSlide(-1)">❮</button>
+                <button onclick="changeSlide(1)">❯</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-dedicatoria" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-dedicatoria')">&times;</span>
+            
+            <div id="flower-stage" onclick="revealBtsMessage()">
+                <h2 style="color: #fff;">¡Sorpresa para Wendy!</h2>
+                <p style="font-size: 0.9rem; margin-bottom: 20px; color: #ccc;">(Toca el ramo para abrir tu regalo)</p>
+                <<img src="imagenes/ramo.jpg" alt="Ramo de Flores">
+            </div>
+
+            <div id="final-bts-message">
+                <h2 style="color: var(--bts-light);">Mensaje Especial</h2>
+                <img src="imagenes/Foto 8.jpg" class="final-photo" alt="BTS Final">
+                
+                <div style="font-style: italic; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                    <p>"Wendy, no importa cuán oscuro se ponga el cielo, siempre habrá estrellas guiándote. Sigue brillando."</p>
+                    <p style="text-align: right; margin-top: 10px; font-weight: bold;">- Con amor, BTS & Yo 💜</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- LOGICA MODALES ---
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+            // Reiniciar sorpresa si se abre ese modal
+            if(modalId === 'modal-dedicatoria'){
+                document.getElementById('flower-stage').style.display = 'block';
+                document.getElementById('final-bts-message').style.display = 'none';
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+
+        // --- LOGICA CARRUSEL ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-wrapper');
+
+        function changeSlide(direction) {
+            slides[currentSlide].classList.remove('active-slide');
+            currentSlide += direction;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            slides[currentSlide].classList.add('active-slide');
+        }
+
+        // --- LOGICA SORPRESA ---
+        function revealBtsMessage() {
+            document.getElementById('flower-stage').style.display = 'none';
+            const finalMsg = document.getElementById('final-bts-message');
+            finalMsg.style.display = 'block';
+            finalMsg.style.animation = 'zoomIn 0.8s';
+        }
+    </script>
+</body>
+</html>
